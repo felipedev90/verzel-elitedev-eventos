@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { prisma } from '@/server/db'
 import { verifyPassword } from '@/server/auth/password'
 import { createSessionToken } from '@/server/auth/session'
+import { internalErrorResponse } from '@/server/http/api-error'
+import { checkRateLimit } from '@/server/auth/rate-limit'
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -10,6 +12,16 @@ const loginSchema = z.object({
 })
 
 export async function POST(request: Request) {
+  const ip = request.headers.get('x-forwarded-for') ?? 'unknown'
+  const rateLimit = checkRateLimit(ip)
+
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Too many attempts. Try again in a minute.' },
+      { status: 429 },
+    )
+  }
+
   const body = await request.json()
   const parsed = loginSchema.safeParse(body)
 
@@ -19,34 +31,39 @@ export async function POST(request: Request) {
 
   const { email, password } = parsed.data
 
-  const user = await prisma.user.findUnique({ where: { email } })
+  try {
+    const user = await prisma.user.findUnique({ where: { email } })
 
-  if (!user) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    if (!user) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    }
+
+    const passwordMatches = await verifyPassword(password, user.passwordHash)
+
+    if (!passwordMatches) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    }
+
+    const token = await createSessionToken({ userId: user.id, role: user.role })
+
+    const response = NextResponse.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    })
+
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    })
+
+    return response
+  } catch (error) {
+    console.error('Login error:', error)
+    return internalErrorResponse()
   }
-
-  const passwordMatches = await verifyPassword(password, user.passwordHash)
-
-  if (!passwordMatches) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
-  }
-
-  const token = await createSessionToken({ userId: user.id, role: user.role })
-
-  const response = NextResponse.json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  })
-
-  response.cookies.set('auth-token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7,
-  })
-
-  return response
 }

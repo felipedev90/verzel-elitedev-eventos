@@ -60,3 +60,8 @@ export async function getNowPlayingMovies(): Promise<CatalogMovie[]> {
   const data = await tmdbFetch<TmdbMovieListResponse>('/movie/now_playing?language=pt-BR&page=1')
   return data.results.map(toCatalogMovie)
 }
+
+export async function getMovieById(id: string): Promise<CatalogMovie> {
+  const raw = await tmdbFetch<TmdbMovie>(`/movie/${id}?language=pt-BR`)
+  return toCatalogMovie(raw)
+}

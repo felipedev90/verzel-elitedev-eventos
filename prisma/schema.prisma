@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ORGANIZER
+  CUSTOMER
+  GATE
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  DECLINED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  events       Event[]
+  orders       Order[]
+  createdAt    DateTime @default(now())
+}
+
+model Event {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  synopsis       String
+  posterUrl      String
+  backdropUrl    String
+  externalId     String
+  externalSource String
+  venueName      String
+  city           String
+  startsAt       DateTime
+  published      Boolean  @default(false)
+  organizer      User     @relation(fields: [organizerId], references: [id])
+  organizerId    String
+  seats          Seat[]
+  tickets        Ticket[]
+  createdAt      DateTime @default(now())
+
+  @@index([published, startsAt])
+}
+
+model Seat {
+  id         String  @id @default(cuid())
+  event      Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId    String
+  sector     String
+  row        String
+  number     Int
+  priceCents Int
+  ticket     Ticket?
+
+  @@unique([eventId, row, number])
+  @@index([eventId])
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  code       String      @unique
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+  status     OrderStatus @default(PENDING)
+  totalCents Int
+  tickets    Ticket[]
+  createdAt  DateTime    @default(now())
+}
+
+model Ticket {
+  id            String    @id @default(cuid())
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       String
+  event         Event     @relation(fields: [eventId], references: [id])
+  eventId       String
+  seat          Seat      @relation(fields: [seatId], references: [id])
+  seatId        String    @unique
+  holderName    String
+  shareToken    String    @unique
+  usedAt        DateTime?
+  validatedById String?
+
+  @@unique([eventId, seatId])
+  @@index([orderId])
+}

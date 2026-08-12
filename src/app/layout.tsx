@@ -14,9 +14,38 @@ const inter = Inter({
   display: 'swap',
 })
 
+const SITE_URL = 'https://verzel-elitedev-eventos.vercel.app'
+const SITE_DESCRIPTION = 'Descubra e reserve ingressos para os melhores filmes em cartaz.'
+
 export const metadata: Metadata = {
-  title: 'KinoGarten',
-  description: 'Descubra e reserve ingressos para os melhores filmes em cartaz.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'KinoGarten',
+    template: '%s | KinoGarten',
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: SITE_URL,
+    siteName: 'KinoGarten',
+    title: 'KinoGarten',
+    description: SITE_DESCRIPTION,
+    images: ['/opengraph-image'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KinoGarten',
+    description: SITE_DESCRIPTION,
+    images: ['/opengraph-image'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
 }
 
 export default function RootLayout({

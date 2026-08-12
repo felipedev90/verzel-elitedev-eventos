@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import { getFeaturedEvents, getCatalogEvents, getPublishedCities } from '@/server/events/queries'
 import { Hero } from './hero'
 import { CatalogSection } from './catalog-section'
+
+export const metadata: Metadata = {
+  title: 'Filmes em cartaz e ingressos online',
+  description:
+    'Descubra os filmes em cartaz, escolha seu assento e compre seu ingresso online no KinoGarten.',
+}
 
 type HomePageProps = {
   searchParams: Promise<{ busca?: string; cidade?: string }>

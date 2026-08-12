@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { LoginForm } from './login-form'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -37,7 +38,9 @@ export default function LoginPage() {
           </h1>
         </div>
 
-        <LoginForm />
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
 
         <Link
           href="/"
@@ -47,11 +50,11 @@ export default function LoginPage() {
           Início
         </Link>
 
-        <div className="mt-12 rounded-md border border-border bg-surface/50 p-4">
-          <p className="mb-2 text-sm text-center">Credenciais de teste (senha: senha123)</p>
+        <div className="mt-6 rounded-md border border-border bg-surface/50 p-4 text-center">
+          <p className="mb-2 text-sm">Credenciais de teste (senha: senha123)</p>
           <ul className="flex flex-col gap-1">
             {SEED_CREDENTIALS.map((cred) => (
-              <li key={cred.email} className="text-xs text-text-muted text-center">
+              <li key={cred.email} className="text-xs text-text-muted">
                 <span className="text-text">{cred.role}:</span> {cred.email}
               </li>
             ))}

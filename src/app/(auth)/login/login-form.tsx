@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/Button'
@@ -16,6 +16,7 @@ const ROLE_REDIRECT: Record<string, string> = {
 
 export function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [serverError, setServerError] = useState<string | null>(null)
 
   const {
@@ -43,7 +44,8 @@ export function LoginForm() {
         return
       }
 
-      router.push(ROLE_REDIRECT[result.role] ?? '/')
+      const redirectTo = searchParams.get('redirect')
+      router.push(redirectTo ?? ROLE_REDIRECT[result.role] ?? '/')
       router.refresh()
     } catch {
       setServerError('Erro de conexão. Verifique sua internet e tente novamente.')

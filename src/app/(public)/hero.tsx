@@ -2,17 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { Event } from '@/generated/prisma/client'
 import { Carousel } from '@/components/ui/Carousel'
+import { formatLongDate } from '@/lib/format'
 
 type HeroProps = {
   events: Event[]
 }
-
-const dateFormatter = new Intl.DateTimeFormat('pt-BR', {
-  day: '2-digit',
-  month: 'long',
-  hour: '2-digit',
-  minute: '2-digit',
-})
 
 export function Hero({ events }: HeroProps) {
   if (events.length === 0) {
@@ -54,7 +48,7 @@ export function Hero({ events }: HeroProps) {
                 {event.title}
               </h1>
               <p className="mb-8 text-sm text-text-muted">
-                {event.venueName} · {event.city} · {dateFormatter.format(event.startsAt)}
+                {event.venueName} · {event.city} · {formatLongDate(event.startsAt)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link

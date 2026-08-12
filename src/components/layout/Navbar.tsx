@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { verifySessionToken } from '@/server/auth/session'
+import { LogoutButton } from './LogoutButton'
+import { LogIn } from 'lucide-react'
 
 const ROLE_LINK: Record<string, { href: string; label: string }> = {
   ORGANIZER: { href: '/organizer', label: 'Meus Eventos' },
@@ -23,18 +25,22 @@ export async function Navbar() {
 
         <div className="flex items-center gap-6">
           {roleLink ? (
-            <Link
-              href={roleLink.href}
-              className="text-sm text-text transition-colors duration-300 hover:text-accent"
-            >
-              {roleLink.label}
-            </Link>
+            <>
+              <Link
+                href={roleLink.href}
+                className="text-sm text-text transition-colors duration-300 hover:text-accent"
+              >
+                {roleLink.label}
+              </Link>
+              <LogoutButton />
+            </>
           ) : (
             <Link
               href="/login"
+              aria-label="Entrar"
               className="text-sm text-text transition-colors duration-300 hover:text-accent"
             >
-              Entrar
+              <LogIn className="mr-1 inline-block h-4 w-4" aria-hidden="true" />
             </Link>
           )}
         </div>

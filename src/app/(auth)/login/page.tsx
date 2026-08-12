@@ -1,8 +1,16 @@
 import { LoginForm } from './login-form'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
+
+const SEED_CREDENTIALS = [
+  { role: 'Organizador', email: 'organizador@eventos.com' },
+  { role: 'Cliente', email: 'cliente1@eventos.com' },
+  { role: 'Portaria', email: 'portaria@eventos.com' },
+]
 
 export default function LoginPage() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg px-4">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg px-4 py-12">
       <div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
@@ -23,13 +31,32 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-sm">
         <div className="mb-10 text-center">
-          <p className="mb-2 text-xs tracking-[0.3em] text-accent uppercase">
-            Sua próxima sessão começa aqui
-          </p>
-          <h1 className="font-serif text-4xl text-text">KinoGarten</h1>
+          <p className="mb-2 text-xs tracking-[0.3em] uppercase">Sua próxima sessão começa aqui</p>
+          <h1 className="font-serif text-4xl text-text">
+            <span className="text-accent/90">Kino</span>Garten
+          </h1>
         </div>
 
         <LoginForm />
+
+        <Link
+          href="/"
+          className="mt-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors duration-300 hover:text-accent"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Início
+        </Link>
+
+        <div className="mt-12 rounded-md border border-border bg-surface/50 p-4">
+          <p className="mb-2 text-sm text-center">Credenciais de teste (senha: senha123)</p>
+          <ul className="flex flex-col gap-1">
+            {SEED_CREDENTIALS.map((cred) => (
+              <li key={cred.email} className="text-xs text-text-muted text-center">
+                <span className="text-text">{cred.role}:</span> {cred.email}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </main>
   )

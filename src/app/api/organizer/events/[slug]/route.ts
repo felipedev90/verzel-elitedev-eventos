@@ -12,7 +12,7 @@ const updateEventSchema = z.object({
 })
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
-  const auth = await requireRole(['ORGANIZER'])
+  const auth = await requireRole(['ORGANIZER', 'GATE'])
   if (!auth.ok) return auth.response
 
   const { slug } = await params
@@ -29,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
       return NextResponse.json({ error: 'Event not found' }, { status: 404 })
     }
 
-    if (event.organizerId !== auth.session.userId) {
+    if (event.organizerId !== auth.session.userId && auth.session.role !== 'GATE') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 

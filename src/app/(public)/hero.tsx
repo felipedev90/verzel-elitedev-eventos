@@ -32,7 +32,7 @@ export function Hero({ events }: HeroProps) {
             />
 
             <div
-              className="absolute inset-0 bg-linear-to-t from-bg via-bg/70 to-bg/10"
+              className="absolute inset-0 bg-linear-to-t from-bg via-bg/20 to-transparent"
               aria-hidden="true"
             />
             <div

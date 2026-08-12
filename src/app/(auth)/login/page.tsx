@@ -1,51 +1,6 @@
-'use client'
-
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/Button'
-import { Spinner } from '@/components/ui/Spinner'
-
-const ROLE_REDIRECT: Record<string, string> = {
-  ORGANIZER: '/organizer',
-  GATE: '/gate',
-  CUSTOMER: '/',
-}
+import { LoginForm } from './login-form'
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    setError(null)
-    setIsSubmitting(true)
-
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error ?? 'Não foi possível entrar. Tente novamente.')
-        return
-      }
-
-      router.push(ROLE_REDIRECT[data.role] ?? '/')
-      router.refresh()
-    } catch {
-      setError('Erro de conexão. Verifique sua internet e tente novamente.')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg px-4">
       <div
@@ -74,57 +29,7 @@ export default function LoginPage() {
           <h1 className="font-serif text-4xl text-text">KinoGarten</h1>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-5 rounded-lg border border-border bg-surface/80 p-8 shadow-2xl backdrop-blur-sm"
-        >
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-sm text-text-muted">
-              E-mail
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="rounded-md border border-border bg-bg px-3 py-2.5 text-text transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="password" className="text-sm text-text-muted">
-              Senha
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="rounded-md border border-border bg-bg px-3 py-2.5 text-text transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            />
-          </div>
-
-          {error && (
-            <p role="alert" className="text-sm text-red-400">
-              {error}
-            </p>
-          )}
-
-          <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
-            {isSubmitting ? (
-              <>
-                <Spinner className="mr-2 size-4" />
-                Entrando...
-              </>
-            ) : (
-              'Entrar'
-            )}
-          </Button>
-        </form>
+        <LoginForm />
       </div>
     </main>
   )

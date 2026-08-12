@@ -11,6 +11,35 @@ const updateEventSchema = z.object({
   published: z.boolean().optional(),
 })
 
+export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const auth = await requireRole(['ORGANIZER'])
+  if (!auth.ok) return auth.response
+
+  const { slug } = await params
+
+  try {
+    const event = await prisma.event.findUnique({
+      where: { slug },
+      include: {
+        _count: { select: { seats: true, tickets: true } },
+      },
+    })
+
+    if (!event) {
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+    }
+
+    if (event.organizerId !== auth.session.userId) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    return NextResponse.json(event)
+  } catch (error) {
+    console.error('Failed to fetch event:', error)
+    return internalErrorResponse()
+  }
+}
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const auth = await requireRole(['ORGANIZER'])
   if (!auth.ok) return auth.response

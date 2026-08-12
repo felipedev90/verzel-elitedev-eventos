@@ -1,15 +1,10 @@
 import { NextResponse } from 'next/server'
-import { z } from 'zod'
 import { prisma } from '@/server/db'
 import { verifyPassword } from '@/server/auth/password'
 import { createSessionToken } from '@/server/auth/session'
 import { internalErrorResponse } from '@/server/http/api-error'
 import { checkRateLimit } from '@/server/auth/rate-limit'
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
-})
+import { loginSchema } from '@/server/auth/schemas'
 
 export async function POST(request: Request) {
   const ip = request.headers.get('x-forwarded-for') ?? 'unknown'

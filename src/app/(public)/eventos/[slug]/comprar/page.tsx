@@ -1,7 +1,9 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { prisma } from '@/server/db'
+import { verifySessionToken } from '@/server/auth/session'
 import { formatLongDate } from '@/lib/format'
 import { SeatMap } from './seat-map'
 
@@ -11,6 +13,14 @@ type BuyPageProps = {
 
 export default async function BuyPage({ params }: BuyPageProps) {
   const { slug } = await params
+
+  const cookieStore = await cookies()
+  const token = cookieStore.get('auth-token')?.value
+  const session = token ? await verifySessionToken(token) : null
+
+  if (!session) {
+    redirect(`/login?redirect=/eventos/${slug}/comprar`)
+  }
 
   const event = await prisma.event.findUnique({
     where: { slug, published: true },

@@ -20,6 +20,8 @@
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "jose": "^6.2.8",
     "next": "16.2.4",
     "pg": "^8.23.0",

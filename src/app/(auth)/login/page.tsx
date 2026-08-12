@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import { LoginForm } from './login-form'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -8,6 +9,14 @@ const SEED_CREDENTIALS = [
   { role: 'Cliente', email: 'cliente1@eventos.com' },
   { role: 'Portaria', email: 'portaria@eventos.com' },
 ]
+
+export const metadata: Metadata = {
+  title: 'Entrar',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function LoginPage() {
   return (

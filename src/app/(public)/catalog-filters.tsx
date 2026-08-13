@@ -29,12 +29,14 @@ export function CatalogFilters({ cities }: CatalogFiltersProps) {
         type="search"
         name="busca"
         placeholder="Buscar filme..."
+        aria-label="Buscar filme"
         defaultValue={searchParams.get('busca') ?? ''}
         className="flex-1 rounded-md border border-border bg-surface px-4 py-2.5 text-text transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       />
 
       <select
         name="cidade"
+        aria-label="Filtrar por cidade"
         defaultValue={searchParams.get('cidade') ?? ''}
         className="rounded-md border border-border bg-surface px-4 py-2.5 text-text transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >

@@ -53,6 +53,7 @@ export function Hero({ events }: HeroProps) {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/eventos/${event.slug}`}
+                  aria-label={`Comprar ingresso para ${event.title}`}
                   className="inline-flex items-center rounded-md bg-accent px-6 py-3 text-sm font-medium text-bg transition-colors duration-300 hover:bg-accent-hover"
                 >
                   Comprar ingresso

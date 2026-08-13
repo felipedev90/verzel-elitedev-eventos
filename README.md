@@ -145,7 +145,7 @@ Server Component por padrão. `'use client'` só quando o componente precisa de 
 - **Cancelamento com devolução ao estoque**: implementado. Cliente pode cancelar um ingresso até 2 horas antes do início do evento, desde que ainda não tenha sido validado na portaria. O assento volta a ficar disponível automaticamente, já que a constraint `@@unique([eventId, seatId])` some junto com o registro do `Ticket`.
 - **Docker Compose**: implementado.
 - **Aplicação publicada**: implementado (Vercel + Neon).
-- **Testes automatizados**: em andamento.
+- **Testes automatizados**: implementado. Testes unitários e de integração (Vitest) cobrindo hash de senha, HMAC do QR code, simulação de pagamento, proteção contra venda duplicada de assento e os 4 estados de validação de portaria. Um teste E2E (Playwright) cobrindo o fluxo completo de compra, incluindo o caminho de pagamento recusado.
 
 ## Scripts
 
@@ -158,6 +158,23 @@ Server Component por padrão. `'use client'` só quando o componente precisa de 
 | `npm run format`           | Formata com Prettier         |
 | `npx prisma studio`        | Interface visual do banco    |
 | `npx prisma migrate reset` | Reseta o banco e roda o seed |
+
+## Rodando os testes
+
+Localmente, os testes unitários e de integração usam o banco configurado em `DATABASE_URL` do seu `.env`. Os testes E2E precisam da aplicação rodando (`npm run dev`) em outro terminal.
+
+\```bash
+
+# Testes unitários e de integração
+
+npm run test
+
+# Testes E2E
+
+npm run test:e2e
+\```
+
+No CI, os testes rodam contra uma branch de banco separada no Neon (isolada da produção), e os E2E usam o container oficial do Playwright.
 
 ## Uso de IA
 

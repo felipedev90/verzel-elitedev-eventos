@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { prisma } from '@/server/db'
 import { formatLongDate, formatPriceFromCents } from '@/lib/format'
+import { ArrowLeft } from 'lucide-react'
 
 type EventPageProps = {
   params: Promise<{ slug: string }>
@@ -96,7 +97,7 @@ export default async function EventPage({ params }: EventPageProps) {
         href="/"
         className="mb-8 inline-flex items-center gap-1 text-sm text-text-muted transition-colors duration-300 hover:text-accent"
       >
-        ← Voltar
+        <ArrowLeft className="mr-1 inline-block h-4 w-4" aria-hidden="true" /> Voltar
       </Link>
       <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
         <div className="relative aspect-2/3 overflow-hidden rounded-md bg-surface">

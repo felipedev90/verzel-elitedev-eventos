@@ -6,6 +6,7 @@ import { Drawer } from '@/components/ui/Drawer'
 import { CheckoutSummary } from './checkout-summary'
 import { PaymentForm } from './payment-form'
 import type { CheckoutFormInput } from './checkout-schema'
+import { TestCardInfo } from './test-card-info'
 
 type SelectedSeat = {
   id: string
@@ -85,6 +86,7 @@ export function CheckoutDrawer({
         declined={declined}
         serverError={serverError}
       />
+      <TestCardInfo />
     </Drawer>
   )
 }

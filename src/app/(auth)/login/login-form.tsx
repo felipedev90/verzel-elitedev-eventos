@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/Button'
 import { Spinner } from '@/components/ui/Spinner'
 import { loginSchema, type LoginInput } from '@/server/auth/schemas'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 const ROLE_REDIRECT: Record<string, string> = {
   ORGANIZER: '/organizer',
@@ -82,14 +83,12 @@ export function LoginForm() {
         <label htmlFor="password" className="text-sm text-text-muted">
           Senha
         </label>
-        <input
+        <PasswordInput
           id="password"
-          type="password"
           autoComplete="current-password"
           aria-invalid={errors.password ? 'true' : 'false'}
           aria-describedby={errors.password ? 'password-error' : undefined}
           {...register('password')}
-          className="rounded-md border border-border bg-bg px-3 py-2.5 text-text transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         />
         {errors.password && (
           <p id="password-error" role="alert" className="text-sm text-red-400">

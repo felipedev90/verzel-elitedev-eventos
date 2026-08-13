@@ -6,6 +6,7 @@ import { prisma } from '@/server/db'
 import { verifySessionToken } from '@/server/auth/session'
 import { formatLongDate } from '@/lib/format'
 import { SeatMap } from './seat-map'
+import { ArrowLeft } from 'lucide-react'
 
 type BuyPageProps = {
   params: Promise<{ slug: string }>
@@ -20,6 +21,24 @@ export default async function BuyPage({ params }: BuyPageProps) {
 
   if (!session) {
     redirect(`/login?redirect=/eventos/${slug}/comprar`)
+  }
+
+  if (session.role !== 'CUSTOMER') {
+    return (
+      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-6 text-center">
+        <h1 className="mb-3 font-serif text-2xl text-text">Compra não disponível</h1>
+        <p className="mb-6 text-text-muted">
+          Contas de organizador ou portaria não podem comprar ingressos. Entre com uma conta de
+          cliente para continuar.
+        </p>
+        <Link
+          href="/"
+          className="inline-flex items-center rounded-md bg-accent px-6 py-3 text-sm font-medium text-bg transition-colors duration-300 hover:bg-accent-hover"
+        >
+          <ArrowLeft className="mr-1 inline-block h-4 w-4" aria-hidden="true" /> Voltar para a Home
+        </Link>
+      </main>
+    )
   }
 
   const event = await prisma.event.findUnique({
@@ -42,7 +61,7 @@ export default async function BuyPage({ params }: BuyPageProps) {
         href={`/eventos/${event.slug}`}
         className="mb-8 inline-flex items-center gap-1 text-sm text-text-muted transition-colors duration-300 hover:text-accent"
       >
-        ← Voltar
+        <ArrowLeft className="mr-1 inline-block h-4 w-4" aria-hidden="true" /> Voltar
       </Link>
 
       <div className="mb-10 flex flex-col items-center gap-4 border-b border-border pb-6 text-center">

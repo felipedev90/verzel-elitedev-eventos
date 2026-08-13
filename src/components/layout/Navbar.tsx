@@ -40,7 +40,7 @@ export async function Navbar() {
               aria-label="Entrar"
               className="text-sm text-text transition-colors duration-300 hover:text-accent"
             >
-              <LogIn className="mr-1 inline-block h-4 w-4" aria-hidden="true" />
+              Entrar <LogIn className="ml-1 inline-block h-4 w-4" aria-hidden="true" />
             </Link>
           )}
         </div>

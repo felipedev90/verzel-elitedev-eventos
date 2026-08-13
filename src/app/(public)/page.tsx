@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { getFeaturedEvents, getCatalogEvents, getPublishedCities } from '@/server/events/queries'
 import { Hero } from './hero'
 import { CatalogSection } from './catalog-section'
+import { CtaSection } from './cta-section'
+import { AboutSection } from './about-section'
+import { NewsletterSection } from './newsletter-section'
 
 export const metadata: Metadata = {
   title: 'Filmes em cartaz e ingressos online',
@@ -26,6 +29,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <main>
       <Hero events={featuredEvents} />
       <CatalogSection events={filteredEvents} cities={cities} />
+      <CtaSection imageUrl="/cta-cinema.webp" />
+      <AboutSection />
+      <NewsletterSection />
     </main>
   )
 }

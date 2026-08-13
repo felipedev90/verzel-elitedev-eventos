@@ -1,7 +1,9 @@
+import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { verifySessionToken } from '@/server/auth/session'
 import { getCustomerTickets } from '@/server/tickets/queries'
 import { TicketCard } from './ticket-card'
+import { ArrowLeft } from 'lucide-react'
 
 export default async function MyTicketsPage() {
   const cookieStore = await cookies()
@@ -12,6 +14,13 @@ export default async function MyTicketsPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <Link
+        href="/"
+        className="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors duration-300 hover:text-accent"
+      >
+        <ArrowLeft className="mr-1 inline-block h-4 w-4" aria-hidden="true" /> Voltar
+      </Link>
+
       <h1 className="mb-8 font-serif text-3xl text-text">Meus ingressos</h1>
 
       {tickets.length === 0 && (

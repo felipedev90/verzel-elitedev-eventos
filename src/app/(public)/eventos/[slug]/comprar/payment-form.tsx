@@ -50,6 +50,7 @@ export function PaymentForm({ totalCents, onSubmit, declined, serverError }: Pay
         <input
           id="cardNumber"
           inputMode="numeric"
+          maxLength={16}
           placeholder="0000000000000000"
           autoComplete="cc-number"
           aria-invalid={errors.cardNumber ? 'true' : 'false'}

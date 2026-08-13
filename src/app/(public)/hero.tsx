@@ -28,7 +28,7 @@ export function Hero({ events }: HeroProps) {
               fill
               priority={index === 0}
               sizes="100vw"
-              className="object-cover object-top"
+              className="object-cover object-center md:object-top"
             />
 
             <div

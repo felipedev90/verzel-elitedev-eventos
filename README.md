@@ -140,8 +140,12 @@ Server Component por padrão. `'use client'` só quando o componente precisa de 
 
 ## Requisitos opcionais
 
-- **Cancelamento com devolução ao estoque**: ainda não implementado no momento desta versão do README. O schema já suporta (bastaria deletar o `Ticket`, já que o `@@unique([eventId, seatId])` libera o assento automaticamente).
-- **Testes automatizados**: em andamento. Prioridade para o checkout (corrida de assento) e a validação de portaria (HMAC e `usedAt`), por serem os pontos mais sensíveis do sistema.
+- **Busca e filtro de eventos**: implementado (busca por nome e filtro por cidade na Home).
+- **Painel do organizador**: implementado (criar, editar, publicar/despublicar eventos).
+- **Cancelamento com devolução ao estoque**: implementado. Cliente pode cancelar um ingresso até 2 horas antes do início do evento, desde que ainda não tenha sido validado na portaria. O assento volta a ficar disponível automaticamente, já que a constraint `@@unique([eventId, seatId])` some junto com o registro do `Ticket`.
+- **Docker Compose**: implementado.
+- **Aplicação publicada**: implementado (Vercel + Neon).
+- **Testes automatizados**: em andamento.
 
 ## Scripts
 

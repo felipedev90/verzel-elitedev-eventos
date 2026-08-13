@@ -47,6 +47,8 @@ jobs:
     name: Automated tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
     env:
       DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -68,9 +70,6 @@ jobs:
 
       - name: Run unit and integration tests
         run: npm run test
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: npm run test:e2e

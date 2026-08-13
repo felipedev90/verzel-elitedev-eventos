@@ -6,8 +6,9 @@ import { ArrowLeft } from 'lucide-react'
 
 const SEED_CREDENTIALS = [
   { role: 'Organizador', email: 'organizador@eventos.com' },
-  { role: 'Cliente', email: 'cliente1@eventos.com' },
   { role: 'Portaria', email: 'portaria@eventos.com' },
+  { role: 'Cliente 1', email: 'cliente1@eventos.com' },
+  { role: 'Cliente 2', email: 'cliente2@eventos.com' },
 ]
 
 export const metadata: Metadata = {

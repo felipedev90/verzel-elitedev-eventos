@@ -41,7 +41,7 @@ export function LoginForm() {
       const result = await response.json()
 
       if (!response.ok) {
-        setServerError(result.error ?? 'Não foi possível entrar. Tente novamente.')
+        setServerError('E-mail ou senha incorretos. Verifique os dados e tente novamente.')
         return
       }
 

@@ -70,13 +70,16 @@ export function TicketCard({ ticket }: TicketCardProps) {
 
   return (
     <div className="rounded-md border border-border bg-surface p-2">
-      <div ref={captureRef} className="flex flex-col gap-6 bg-surface p-2 sm:flex-row">
+      <div
+        ref={captureRef}
+        className="flex flex-col items-center gap-6 bg-surface p-2 text-center sm:flex-row sm:items-start sm:text-left"
+      >
         <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-md bg-bg sm:h-40 sm:w-28">
           <Image src={ticket.event.posterUrl} alt="" fill sizes="112px" className="object-cover" />
         </div>
 
         <div className="flex-1">
-          <div className="mb-3 flex items-start justify-between gap-3">
+          <div className="mb-3 flex flex-col items-center justify-between gap-3 sm:flex-row sm:items-start">
             <div>
               <h3 className="font-serif text-xl text-text">{ticket.event.title}</h3>
               <p className="text-sm text-text-muted">
@@ -106,7 +109,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-end gap-4">
+      <div className="mt-4 flex items-center justify-center gap-4  md:justify-end">
         {canCancel && <CancelTicketButton ticketId={ticket.id} />}
 
         <button

@@ -6,6 +6,8 @@ import { Share2, Download } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toPng } from 'html-to-image'
 import { formatLongDate } from '@/lib/format'
+import { CancelTicketButton } from './cancel-ticket-button'
+import { CANCELLATION_WINDOW_MS } from '@/lib/constants'
 
 type Ticket = {
   id: string
@@ -62,6 +64,9 @@ export function TicketCard({ ticket }: TicketCardProps) {
   }
 
   const isUsed = Boolean(ticket.usedAt)
+  const [canCancel] = useState(
+    () => !isUsed && ticket.event.startsAt.getTime() - Date.now() > CANCELLATION_WINDOW_MS,
+  )
 
   return (
     <div className="rounded-md border border-border bg-surface p-2">
@@ -101,7 +106,9 @@ export function TicketCard({ ticket }: TicketCardProps) {
         </div>
       </div>
 
-      <div className="mt-4 flex justify-end gap-4">
+      <div className="mt-4 flex items-center justify-end gap-4">
+        {canCancel && <CancelTicketButton ticketId={ticket.id} />}
+
         <button
           type="button"
           onClick={handleShare}

@@ -1,0 +1,1 @@
+export const CANCELLATION_WINDOW_MS = 2 * 60 * 60 * 1000

@@ -37,19 +37,19 @@ O desafio pede back-end em Node. Route Handlers do Next são Node rodando no ser
 
 ### 1. Clonar e instalar
 
-\```bash
+```bash
 git clone https://github.com/felipedev90/verzel-elitedev-eventos.git
 cd verzel-elitedev-eventos
 npm install
-\```
+```
 
 ### 2. Variáveis de ambiente
 
 Copia `.env.example` para `.env` e preenche:
 
-\```bash
+```bash
 cp .env.example .env
-\```
+```
 
 | Variável         | Descrição                                                                                                         |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -64,11 +64,11 @@ Duas opções:
 
 **A. Postgres local via Docker (recomendado para desenvolver)**
 
-\```bash
+```bash
 docker compose up -d
 npx prisma migrate deploy
 npx prisma db seed
-\```
+```
 
 **B. Usar o banco de produção direto**
 
@@ -76,15 +76,15 @@ Se quiser só ver o projeto funcionando sem instalar Docker, usa a `DATABASE_URL
 
 ### 4. Rodar
 
-\```bash
+```bash
 npm run dev
-\```
+```
 
 Abre em `http://localhost:3000`.
 
 ## Estrutura de pastas
 
-\```
+```
 src/
 ├── app/
 │ ├── api/ # Route Handlers (o "back-end")
@@ -108,7 +108,7 @@ src/
 │ └── tmdb/
 ├── lib/ # Utilities compartilhadas (cn, format)
 └── types/ # Tipos puros
-\```
+```
 
 ## Decisões técnicas
 
@@ -145,7 +145,7 @@ Server Component por padrão. `'use client'` só quando o componente precisa de 
 - **Cancelamento com devolução ao estoque**: implementado. Cliente pode cancelar um ingresso até 2 horas antes do início do evento, desde que ainda não tenha sido validado na portaria. O assento volta a ficar disponível automaticamente, já que a constraint `@@unique([eventId, seatId])` some junto com o registro do `Ticket`.
 - **Docker Compose**: implementado.
 - **Aplicação publicada**: implementado (Vercel + Neon).
-- **Testes automatizados**: em andamento.
+- **Testes automatizados**: implementado. Testes unitários e de integração (Vitest) cobrindo hash de senha, HMAC do QR code, simulação de pagamento, proteção contra venda duplicada de assento e os 4 estados de validação de portaria. Um teste E2E (Playwright) cobrindo o fluxo completo de compra, incluindo o caminho de pagamento recusado.
 
 ## Scripts
 
@@ -158,6 +158,23 @@ Server Component por padrão. `'use client'` só quando o componente precisa de 
 | `npm run format`           | Formata com Prettier         |
 | `npx prisma studio`        | Interface visual do banco    |
 | `npx prisma migrate reset` | Reseta o banco e roda o seed |
+
+## Rodando os testes
+
+Localmente, os testes unitários e de integração usam o banco configurado em `DATABASE_URL` do seu `.env`. Os testes E2E precisam da aplicação rodando (`npm run dev`) em outro terminal.
+
+```bash
+
+# Testes unitários e de integração
+
+npm run test
+
+# Testes E2E
+
+npm run test:e2e
+```
+
+No CI, os testes rodam contra uma branch de banco separada no Neon (isolada da produção), e os E2E usam o container oficial do Playwright.
 
 ## Uso de IA
 

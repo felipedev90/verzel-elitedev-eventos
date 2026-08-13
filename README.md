@@ -4,16 +4,6 @@ Plataforma de eventos e ingressos desenvolvida para o desafio técnico Elite Dev
 
 **Deploy:** https://verzel-elitedev-eventos.vercel.app
 
-## Credenciais de teste
-
-Todas as senhas: `senha123`
-
-| Papel       | E-mail                    |
-| ----------- | ------------------------- |
-| Organizador | `organizador@eventos.com` |
-| Cliente     | `cliente1@eventos.com`    |
-| Portaria    | `portaria@eventos.com`    |
-
 ## Stack
 
 - **Framework**: Next.js 16 (App Router), fullstack, front e back no mesmo projeto
@@ -82,6 +72,16 @@ npm run dev
 
 Abre em `http://localhost:3000`.
 
+## Credenciais de teste
+
+Todas as senhas: `senha123`
+
+| Papel       | E-mail                    |
+| ----------- | ------------------------- |
+| Organizador | `organizador@eventos.com` |
+| Cliente     | `cliente1@eventos.com`    |
+| Portaria    | `portaria@eventos.com`    |
+
 ## Estrutura de pastas
 
 ```
@@ -109,6 +109,19 @@ src/
 ├── lib/ # Utilities compartilhadas (cn, format)
 └── types/ # Tipos puros
 ```
+
+## Qualidade (Lighthouse)
+
+Medido em produção:
+
+![Resultado do Lighthouse](public/lighthouse.png)
+
+| Métrica        | Nota |
+| -------------- | ---- |
+| Performance    | 97   |
+| Acessibilidade | 100  |
+| Boas práticas  | 100  |
+| SEO            | 100  |
 
 ## Decisões técnicas
 
